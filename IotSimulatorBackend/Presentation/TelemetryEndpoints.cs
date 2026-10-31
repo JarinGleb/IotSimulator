@@ -1,5 +1,7 @@
 ﻿using IotSimulatorBackend.Application.Services;
+using IotSimulatorBackend.Presentation.Hubs;
 using IotSimulatorBackend.Presentation.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace IotSimulatorBackend.Presentation
 {
@@ -9,10 +11,19 @@ namespace IotSimulatorBackend.Presentation
         {
             var group = app.MapGroup("/api/telemetry");
 
-            group.MapPost("/", async (TelemetryData telemetry, TelemetryService telemetryService) =>
+            group.MapPost("/", async (TelemetryData telemetry, TelemetryService telemetryService, IHubContext<TelemetryHub> hubContext) =>
             {
                 await telemetryService.ProcessTelemetryAsync(telemetry.DeviceId, telemetry.Temperature, telemetry.Timestamp);
-                return Results.Ok(new { message = "Data received and processed" });
+
+                await hubContext.Clients.All.SendAsync("ReceiveTelemetry", new
+                {
+                    deviceId = telemetry.DeviceId,
+                    temperature = telemetry.Temperature,
+                    timestamp = telemetry.Timestamp.ToString("HH:mm:ss")
+                });
+
+                return Results.Ok(new { message = "Data received and translating" });
+
             });
 
             group.MapGet("/latest", async (TelemetryService telemetryService) =>
