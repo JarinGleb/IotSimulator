@@ -20,3 +20,19 @@ The solution is divided into two primary components: a multi-threaded device sim
 * **Real-time Transport**: Microsoft ASP.NET Core SignalR
 * **ORM**: Entity Framework Core
 * **Database**: SQLite (File-based)
+
+---
+
+## Configuration & Installation
+
+### Prerequisites
+* .NET SDK (version 8.0 or higher)
+
+### Repository Setup
+Clone the repository to your local machine:
+```bash
+git clone https://github.com/JarinGleb/IotSimulator.git
+```
+
+### Database Initialization
+The SQLite database file (`TelemetryRecords.db`) is generated automatically on the first application startup via `Database.EnsureCreated()`. No manual database provisioning is required.
