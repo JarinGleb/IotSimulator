@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="IotSimulator/IotSimulator.csproj" />
+  <Project Path="IotSimulatorBackend/IotSimulatorBackend.csproj" />
+</Solution>
